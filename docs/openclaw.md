@@ -86,6 +86,41 @@ so "state the item, price and balance, then wait for an explicit yes" is a
 *prompt instruction only*. It has held in testing, but it is a softer guarantee
 and should be described that way in any demo.
 
+## Access control — which chats it may answer (learned the hard way)
+
+By default OpenClaw is a *personal assistant for all your chats*: with
+`dmPolicy: "pairing"` it will engage in **any** conversation on the linked
+account, including messages from other people. During setup that is exactly
+what happened — it began replying in new WhatsApp chats. Neither the event
+guide nor our own ticket checklist mentioned scoping *who it talks to*; both
+only covered scoping *what it can do* (one skill). That was the gap.
+
+The fix, in `~/.openclaw/openclaw.json`:
+
+```json
+"channels": {
+  "whatsapp": {
+    "dmPolicy": "allowlist",
+    "allowFrom": ["<your own number, digits only>"],
+    "groupPolicy": "disabled",
+    "groupAllowFrom": []
+  }
+}
+```
+
+- `dmPolicy: allowlist` + `allowFrom` — replies only to messages from the
+  listed numbers. With just your own number, that means only your
+  Message-Yourself chat.
+- `groupPolicy: disabled` — never responds in group chats.
+
+Apply with `openclaw config patch --stdin` then `openclaw gateway restart`, and
+verify with `openclaw channels status` — it should read `dm:allowlist,
+allow:<number>`. Your own number can be read from
+`~/.openclaw/credentials/whatsapp/default/creds.json` (`me.id`).
+
+**Kill switch:** `openclaw gateway stop` halts everything instantly.
+`openclaw gateway uninstall` also prevents it restarting at login.
+
 Other things worth knowing:
 
 - OpenClaw runs with real access to your machine and your real WhatsApp
