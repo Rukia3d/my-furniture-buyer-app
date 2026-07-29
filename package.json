@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
     "load-catalogue": "node db/load-catalogue.js",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "eval": "node evals/run.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/Rukia3d/my-furniture-buyer-app#readme",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.115.0",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^13.0.1",
     "dotenv": "^17.4.2",

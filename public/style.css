@@ -188,3 +188,17 @@ main { max-width: 1160px; margin: 0 auto; padding: 2rem 2.5rem 4rem; }
 .tag { background: var(--accent); color: #fff; font-size: .7rem; padding: .1rem .45rem; border-radius: 10px; margin-left: .4rem; vertical-align: middle; }
 
 .error-inline { color: #8c2f24; font-weight: 400; }
+
+/* --- assistant chat --- */
+.chat-main { max-width: 720px; display: flex; flex-direction: column; min-height: calc(100vh - 220px); }
+.chat-log { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: .6rem; padding: 1rem 0; }
+.chat-msg { max-width: 85%; padding: .6rem .9rem; border-radius: 12px; font-size: .95rem; white-space: pre-wrap; }
+.chat-msg.user { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+.chat-msg.assistant { align-self: flex-start; background: #fff; border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+.chat-msg.thinking { color: var(--muted); }
+.chat-form { display: flex; gap: .6rem; padding-top: .75rem; border-top: 1px solid var(--line); }
+.chat-form input {
+  flex: 1; padding: .65rem .9rem; font-size: 1rem; font-family: inherit;
+  border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink);
+}
+.chat-form input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }

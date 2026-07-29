@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assistant — Furniture Shop</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="chat-main">
+    <h2 class="page-title">Shopping assistant</h2>
+    <p class="notice">Ask in plain English — "find me a mustard chair under $500", "what's my balance?", "buy the first one".</p>
+    <div id="chat" class="chat-log">
+      <% for (const m of log) { %>
+        <div class="chat-msg <%= m.role %>"><%= m.text %></div>
+      <% } %>
+      <% if (log.length === 0) { %>
+        <div class="chat-msg assistant">Hi <%= currentUser.display_name %>! What are you looking for today?</div>
+      <% } %>
+    </div>
+    <form id="chat-form" class="chat-form">
+      <input id="chat-input" type="text" placeholder="Type your request…" autocomplete="off" autofocus>
+      <button type="submit" class="button-primary">Send</button>
+    </form>
+  </main>
+  <script>
+    const chat = document.getElementById('chat');
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('chat-input');
+    const button = form.querySelector('button');
+
+    function addMsg(role, text) {
+      const div = document.createElement('div');
+      div.className = 'chat-msg ' + role;
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+      return div;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      input.disabled = button.disabled = true;
+      addMsg('user', text);
+      const thinking = addMsg('assistant thinking', '…');
+      try {
+        const res = await fetch('/assistant/message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text }),
+        });
+        const data = await res.json();
+        thinking.remove();
+        addMsg('assistant', data.reply || data.error || 'Something went wrong.');
+      } catch {
+        thinking.remove();
+        addMsg('assistant', 'Connection problem — please try again.');
+      }
+      input.disabled = button.disabled = false;
+      input.focus();
+    });
+  </script>
+</body>
+</html>

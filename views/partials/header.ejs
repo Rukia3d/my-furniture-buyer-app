@@ -3,6 +3,7 @@
   <nav>
     <a href="/">Products</a>
     <% if (currentUser) { %>
+      <a href="/assistant">Assistant</a>
       <a href="/orders">My orders</a>
       <a href="/account"><%= currentUser.display_name %></a>
       <form action="/logout" method="post" class="inline-form"><button type="submit" class="link-button">Log out</button></form>
