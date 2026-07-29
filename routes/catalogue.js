@@ -37,6 +37,16 @@ router.get('/products/:itemId', (req, res) => {
   res.render('product', { product, colours: JSON.parse(product.colours || '[]') });
 });
 
+// Lightweight product info for the chat's preview cards.
+router.get('/api/products', (req, res) => {
+  const ids = String(req.query.ids || '').split(',').filter(Boolean).slice(0, 12);
+  const rows = ids.map(id => db.prepare(`
+    SELECT item_id, product_name, price, category, image_data IS NOT NULL AS has_image
+    FROM products WHERE item_id = ?
+  `).get(id)).filter(Boolean);
+  res.json({ products: rows });
+});
+
 router.get('/products/:itemId/image', (req, res) => {
   const row = db.prepare('SELECT image_data, image_mime_type FROM products WHERE item_id = ?').get(req.params.itemId);
   if (!row || !row.image_data) return res.status(404).end();

@@ -13,7 +13,7 @@
     <p class="notice">Ask in plain English — "find me a mustard chair under $500", "what's my balance?", "buy the first one".</p>
     <div id="chat" class="chat-log">
       <% for (const m of log) { %>
-        <div class="chat-msg <%= m.role %>"><%= m.text %></div>
+        <div class="chat-msg <%= m.role %>" data-raw="<%= m.text %>"><%= m.text %></div>
       <% } %>
       <% if (log.length === 0) { %>
         <div class="chat-msg assistant">Hi <%= currentUser.display_name %>! What are you looking for today?</div>
@@ -30,13 +30,74 @@
     const input = document.getElementById('chat-input');
     const button = form.querySelector('button');
 
+    // Minimal markdown renderer: escapes HTML first, then formats the
+    // subset the model actually uses (bold, italic, code, lists).
+    function renderMarkdown(text) {
+      const esc = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const lines = esc.split('\n');
+      let html = '', inList = false;
+      for (const line of lines) {
+        const item = line.match(/^\s*(?:[-*•]|\d+[.)])\s+(.*)/);
+        if (item) {
+          if (!inList) { html += '<ul>'; inList = true; }
+          html += '<li>' + item[1] + '</li>';
+        } else {
+          if (inList) { html += '</ul>'; inList = false; }
+          if (line.trim()) html += '<p>' + line + '</p>';
+        }
+      }
+      if (inList) html += '</ul>';
+      return html
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+    }
+
+    // Any "(item 12345678)" ids in a reply become preview cards.
+    async function addPreviews(div, text) {
+      const ids = [...new Set([...text.matchAll(/item\s+([A-Za-z0-9-]{6,12})/g)].map(m => m[1]))];
+      if (!ids.length) return;
+      try {
+        const res = await fetch('/api/products?ids=' + ids.join(','));
+        const { products } = await res.json();
+        if (!products.length) return;
+        const row = document.createElement('div');
+        row.className = 'chat-previews';
+        for (const p of products) {
+          const a = document.createElement('a');
+          a.className = 'chat-preview-card';
+          a.href = '/products/' + p.item_id;
+          a.target = '_blank';
+          a.innerHTML =
+            (p.has_image ? `<img src="/products/${p.item_id}/image" alt="" loading="lazy">` : '') +
+            `<span class="cp-name"></span><span class="cp-price">$${p.price.toFixed(2)}</span>`;
+          a.querySelector('.cp-name').textContent = p.product_name;
+          row.appendChild(a);
+        }
+        div.appendChild(row);
+        chat.scrollTop = chat.scrollHeight;
+      } catch {}
+    }
+
     function addMsg(role, text) {
       const div = document.createElement('div');
       div.className = 'chat-msg ' + role;
-      div.textContent = text;
+      if (role === 'assistant') {
+        div.innerHTML = renderMarkdown(text);
+        addPreviews(div, text);
+      } else {
+        div.textContent = text;
+      }
       chat.appendChild(div);
       chat.scrollTop = chat.scrollHeight;
       return div;
+    }
+
+    // Re-render server-provided history (raw text) as markdown + previews.
+    for (const el of document.querySelectorAll('.chat-msg.assistant[data-raw]')) {
+      const raw = el.getAttribute('data-raw');
+      el.innerHTML = renderMarkdown(raw);
+      addPreviews(el, raw);
     }
 
     form.addEventListener('submit', async (e) => {

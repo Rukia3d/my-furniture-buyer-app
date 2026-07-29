@@ -202,3 +202,21 @@ main { max-width: 1160px; margin: 0 auto; padding: 2rem 2.5rem 4rem; }
   border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink);
 }
 .chat-form input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+
+/* --- chat markdown & product previews --- */
+.chat-msg p { margin: 0 0 .4rem; }
+.chat-msg p:last-child { margin-bottom: 0; }
+.chat-msg ul { margin: .2rem 0 .4rem 1.2rem; }
+.chat-msg li { margin-bottom: .2rem; }
+.chat-msg code { background: #f1ece4; padding: 0 .3rem; border-radius: 4px; font-size: .85em; }
+.chat-previews { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: .6rem; }
+.chat-preview-card {
+  display: flex; flex-direction: column; width: 108px; text-decoration: none;
+  border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; color: var(--ink);
+}
+.chat-preview-card img { width: 100%; height: 80px; object-fit: cover; background: #efe9df; }
+.chat-preview-card .cp-name {
+  font-size: .72rem; padding: .3rem .4rem 0; line-height: 1.25;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.chat-preview-card .cp-price { font-size: .75rem; font-weight: 700; color: var(--accent-dark); padding: .15rem .4rem .35rem; }
