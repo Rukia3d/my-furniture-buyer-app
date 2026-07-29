@@ -32,6 +32,9 @@ issues on this repo — one issue per milestone, each with "done when" criteria.
 
 - The repo is **public**. Every secret (furniture-shop API key, MongoDB
   connection string, session secret, Anthropic API key) lives in `.env` only.
+- **Never put a password, even a demo one, in the repo.** No seeded accounts:
+  users register through the app, and `npm run link-account <username>` points
+  one at the live shop API. Tests register their own throwaway accounts.
 - `.env` must be in `.gitignore` from the first commit that creates it;
   `.env.example` (with placeholder values, real port numbers) is committed.
 - Never print secrets in logs, error messages, or commit messages.

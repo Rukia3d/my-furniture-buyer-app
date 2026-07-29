@@ -72,16 +72,18 @@ scored — only retrieval; ranking quality beyond "in top 25" is reported
 
 ## 3. E2E browser tests (`e2e/shop.spec.js`)
 
-Playwright, Chromium, serial (shared SQLite). **Only ever logs in as local
-users** — structurally cannot spend real event balance.
+Playwright, Chromium, serial (shared SQLite). Each run **registers its own
+throwaway local account** with a random password — never the linked account —
+so it structurally cannot spend real event balance, and no credentials live
+in the repo.
 
 | # | Test | Asserts |
 |---|---|---|
 | 1 | Catalogue page | 24 cards on page 1, 762 total, category filter narrows |
 | 2 | Product detail | Name, price, visible image, dimensions |
-| 3 | Wrong password | Rejected with visible message |
+| 3 | Wrong password | Rejected with visible message (login is rate-limited after 10 failures per username / 15 min) |
 | 4 | Logged-out buying | Buy hidden, login prompt shown |
-| 5 | Registration | New account works, starts with $1000 |
+| 5 | Registration | A second new account works, starts with $1000 |
 | 6 | Local purchase | Buy → order history → success message → balance reduced by exact price |
 | 7 | Overspend | Blocked with "Insufficient balance" message |
 | 8 | Unknown product URL | 404 with friendly page, no crash |

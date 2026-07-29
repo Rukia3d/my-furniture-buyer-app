@@ -1,17 +1,35 @@
-// E2E smoke tests. IMPORTANT: these only ever log in as LOCAL users
-// (demo / freshly registered) — never the linked account — so a test run
-// can never spend the real event balance.
+// E2E smoke tests. IMPORTANT: each run registers its OWN throwaway local
+// account — never the linked account — so a test run can never spend the
+// real event balance. No credentials live in this repo.
 const { test, expect } = require('@playwright/test');
 
 const CHEAP_ITEM = '80336433';      // Knob, $1.20
-const EXPENSIVE_ITEM = '59161492';  // Table and 6 chairs, ~$1622 — above every local balance
+const EXPENSIVE_ITEM = '59161492';  // Table and 6 chairs, ~$1622 — above the $1000 starting balance
+const PASSWORD = 'e2e-' + Math.random().toString(36).slice(2, 10);
 
-async function loginAs(page, username, password = 'furniture') {
+let username; // registered once, reused by the tests that need a login
+
+async function register(page, name = `e2e_${Date.now()}`) {
+  await page.goto('/register');
+  await page.fill('input[name="username"]', name);
+  await page.fill('input[name="display_name"]', 'E2E Test User');
+  await page.fill('input[name="password"]', PASSWORD);
+  await page.click('button[type="submit"]');
+  return name;
+}
+
+async function login(page, name = username, password = PASSWORD) {
   await page.goto('/login');
-  await page.fill('input[name="username"]', username);
+  await page.fill('input[name="username"]', name);
   await page.fill('input[name="password"]', password);
   await page.click('button[type="submit"]');
 }
+
+test.beforeAll(async ({ browser }) => {
+  const page = await browser.newPage();
+  username = await register(page);
+  await page.close();
+});
 
 test('home page shows the real catalogue with category filter', async ({ page }) => {
   await page.goto('/');
@@ -31,7 +49,7 @@ test('product detail shows price, image and dimensions', async ({ page }) => {
 });
 
 test('wrong password is rejected with a message', async ({ page }) => {
-  await loginAs(page, 'demo', 'wrong-password');
+  await login(page, username, 'definitely-not-the-password');
   await expect(page.locator('.error')).toContainText('Wrong username or password');
 });
 
@@ -41,18 +59,13 @@ test('buying while logged out redirects to login', async ({ page }) => {
 });
 
 test('registration creates a working account with $1000', async ({ page }) => {
-  const username = `e2e_${Date.now()}`;
-  await page.goto('/register');
-  await page.fill('input[name="username"]', username);
-  await page.fill('input[name="display_name"]', 'E2E Test User');
-  await page.fill('input[name="password"]', 'testing123');
-  await page.click('button[type="submit"]');
+  await register(page, `e2e_r${Date.now().toString().slice(-9)}`);
   await page.goto('/account');
   await expect(page.locator('.account-details')).toContainText('$1000.00');
 });
 
 test('local user can buy, sees order history, balance drops', async ({ page }) => {
-  await loginAs(page, 'demo');
+  await login(page);
   const before = parseFloat(
     (await page.goto('/account').then(() => page.locator('.account-details').textContent()))
       .match(/\$([\d.]+)/)[1]
@@ -66,7 +79,7 @@ test('local user can buy, sees order history, balance drops', async ({ page }) =
 });
 
 test('overspending is blocked with a clear message', async ({ page }) => {
-  await loginAs(page, 'demo');
+  await login(page);
   await page.goto(`/products/${EXPENSIVE_ITEM}`);
   await page.click('.buy-form button');
   await expect(page.locator('.error')).toContainText('Insufficient balance');

@@ -9,7 +9,8 @@
     "load-catalogue": "node db/load-catalogue.js",
     "test:e2e": "playwright test",
     "eval": "node evals/run.js",
-    "eval:rag": "rag-sidecar/.venv/bin/python rag-sidecar/eval.py"
+    "eval:rag": "rag-sidecar/.venv/bin/python rag-sidecar/eval.py",
+    "link-account": "node scripts/link-account.js"
   },
   "repository": {
     "type": "git",

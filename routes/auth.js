@@ -4,16 +4,47 @@ const db = require('../db/db');
 
 const router = express.Router();
 
+// The app is exposed publicly over ngrok, so throttle password guessing:
+// 10 failures per username per 15 minutes.
+const MAX_ATTEMPTS = 10;
+const WINDOW_MS = 15 * 60 * 1000;
+const attempts = new Map();
+
+function tooManyAttempts(key) {
+  const record = attempts.get(key);
+  if (!record || Date.now() > record.until) return false;
+  return record.count >= MAX_ATTEMPTS;
+}
+
+function noteFailure(key) {
+  const record = attempts.get(key);
+  if (!record || Date.now() > record.until) {
+    attempts.set(key, { count: 1, until: Date.now() + WINDOW_MS });
+  } else {
+    record.count++;
+  }
+}
+
 router.get('/login', (req, res) => {
   res.render('login', { error: null });
 });
 
 router.post('/login', (req, res) => {
   const { username, password } = req.body;
-  const user = db.prepare('SELECT * FROM users WHERE username = ?').get((username || '').trim().toLowerCase());
+  const key = (username || '').trim().toLowerCase();
+
+  if (tooManyAttempts(key)) {
+    return res.status(429).render('login', {
+      error: 'Too many failed attempts. Please wait a few minutes and try again.',
+    });
+  }
+
+  const user = db.prepare('SELECT * FROM users WHERE username = ?').get(key);
   if (!user || !bcrypt.compareSync(password || '', user.password_hash)) {
+    noteFailure(key);
     return res.status(401).render('login', { error: 'Wrong username or password.' });
   }
+  attempts.delete(key);
   req.session.userId = user.id;
   res.redirect('/');
 });

@@ -28,6 +28,40 @@ chair under $500") and an AI agent does the searching and ordering for them.
   returns a preview first and only executes when the user's follow-up confirms.
 - No cart — orders go straight from the product page or the agent.
 
-## Status
+## Running it
 
-Project setup in progress — see the repo issues for the milestone plan.
+```bash
+npm install
+cp .env.example .env          # then fill in the secrets
+npm run load-catalogue        # 762 products from the shared MongoDB
+npm start                     # http://localhost:3003
+```
+
+Optional extras: the RAG sidecar (`cd rag-sidecar && .venv/bin/uvicorn main:app --port 8000`)
+and a public URL (`ngrok http 3003`).
+
+### Accounts
+
+**No accounts ship with this repo and no password appears in it** — register
+through the app. New accounts are local, with a $1,000 play balance.
+
+To point one account at the live shop API (real balance, real orders), register
+it and then:
+
+```bash
+npm run link-account <username>
+```
+
+Only one account can be linked at a time — the API key belongs to exactly one
+shop user. Everyone else stays local, which is what keeps a public demo safe.
+
+### Checks
+
+```bash
+npm run eval        # agent tool-use evals (needs an Anthropic key)
+npm run eval:rag    # RAG retrieval evals (needs the sidecar running)
+npm run test:e2e    # Playwright browser tests
+```
+
+See `docs/evals.md` for what each scenario covers, `docs/agent.md` for how the
+assistant works, and `docs/rag.md` for the Q&A pipeline.
