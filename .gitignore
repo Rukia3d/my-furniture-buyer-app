@@ -1,0 +1,17 @@
+# Secrets — never commit
+.env
+
+# Dependencies
+node_modules/
+
+# SQLite database files
+db/*.sqlite
+db/*.sqlite-journal
+db/*.db
+
+# Python sidecar (Step 8)
+rag-sidecar/.venv/
+rag-sidecar/__pycache__/
+
+# OS noise
+.DS_Store
