@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= product.product_name %> — Furniture Shop</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <p class="breadcrumb"><a href="/">Products</a> / <a href="/?category=<%= encodeURIComponent(product.category) %>"><%= product.category %></a></p>
+    <div class="product-detail">
+      <div class="product-detail-image">
+        <% if (product.has_image) { %>
+          <img src="/products/<%= product.item_id %>/image" alt="<%= product.product_name %>">
+        <% } else { %>
+          <div class="product-image">&#9642;</div>
+        <% } %>
+      </div>
+      <div class="product-detail-info">
+        <h2><%= product.product_name %></h2>
+        <p class="category"><%= product.category %> · #<%= product.item_id %></p>
+        <p class="price big-price">$<%= product.price.toFixed(2) %></p>
+        <% if (colours.length) { %>
+          <p class="detail-row"><span>Colours</span> <%= colours.join(', ') %></p>
+        <% } %>
+        <% if (product.width || product.height || product.depth) { %>
+          <p class="detail-row"><span>Dimensions</span>
+            <%= [product.width && `W ${product.width}cm`, product.height && `H ${product.height}cm`, product.depth && `D ${product.depth}cm`].filter(Boolean).join(' × ') %>
+          </p>
+        <% } %>
+        <p class="detail-row muted-note">Ordering arrives in the next milestone.</p>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

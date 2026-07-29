@@ -25,7 +25,8 @@ db.exec(`
     depth          REAL,
     height         REAL,
     width          REAL,
-    image_url      TEXT,
+    image_data     TEXT,
+    image_mime_type TEXT,
     source         TEXT NOT NULL DEFAULT 'placeholder',
     last_synced_at TEXT
   );

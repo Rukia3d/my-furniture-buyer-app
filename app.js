@@ -2,10 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const db = require('./db/db');
 const { seed } = require('./db/seed');
 const { loadUser, requireLogin } = require('./routes/middleware');
 const authRoutes = require('./routes/auth');
+const catalogueRoutes = require('./routes/catalogue');
 
 seed();
 
@@ -23,11 +23,7 @@ app.use(session({
 }));
 app.use(loadUser);
 app.use(authRoutes);
-
-app.get('/', (req, res) => {
-  const products = db.prepare('SELECT * FROM products ORDER BY category, product_name').all();
-  res.render('home', { products });
-});
+app.use(catalogueRoutes);
 
 app.get('/account', requireLogin, (req, res) => {
   res.render('account');

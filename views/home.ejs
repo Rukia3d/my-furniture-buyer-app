@@ -8,28 +8,51 @@
 </head>
 <body>
   <%- include('partials/header') %>
+  <% if (!category && page === 1) { %>
   <section class="hero">
     <h2>Find furniture you'll love</h2>
     <p>Browse the catalogue, or just tell us what you're looking for.</p>
   </section>
+  <% } %>
   <main>
-    <p class="notice"><%= products.length %> products<% if (products.some(p => p.source === 'placeholder')) { %> · placeholder data — real catalogue coming soon<% } %></p>
+    <div class="catalogue-bar">
+      <form action="/" method="get" class="category-form">
+        <select name="category" onchange="this.form.submit()">
+          <option value="">All categories</option>
+          <% for (const c of categories) { %>
+            <option value="<%= c %>" <%= c === category ? 'selected' : '' %>><%= c %></option>
+          <% } %>
+        </select>
+        <noscript><button type="submit">Filter</button></noscript>
+      </form>
+      <p class="notice"><%= total %> product<%= total === 1 ? '' : 's' %><%= category ? ` in ${category}` : '' %></p>
+    </div>
     <ul class="product-grid">
       <% for (const p of products) { %>
         <li class="product-card">
-          <% if (p.image_url) { %>
-            <img src="<%= p.image_url %>" alt="<%= p.product_name %>" loading="lazy">
-          <% } else { %>
-            <div class="product-image">&#9642;</div>
-          <% } %>
-          <div class="product-body">
-            <h2><%= p.product_name %></h2>
-            <p class="category"><%= p.category %></p>
-            <p class="price">$<%= p.price.toFixed(2) %></p>
-          </div>
+          <a href="/products/<%= p.item_id %>">
+            <% if (p.has_image) { %>
+              <img src="/products/<%= p.item_id %>/image" alt="<%= p.product_name %>" loading="lazy">
+            <% } else { %>
+              <div class="product-image">&#9642;</div>
+            <% } %>
+            <div class="product-body">
+              <h2><%= p.product_name %></h2>
+              <p class="category"><%= p.category %></p>
+              <p class="price">$<%= p.price.toFixed(2) %></p>
+            </div>
+          </a>
         </li>
       <% } %>
     </ul>
+    <% if (totalPages > 1) { %>
+      <nav class="pagination">
+        <% const qs = category ? `category=${encodeURIComponent(category)}&` : ''; %>
+        <% if (page > 1) { %><a href="/?<%= qs %>page=<%= page - 1 %>">&larr; Previous</a><% } %>
+        <span>Page <%= page %> of <%= totalPages %></span>
+        <% if (page < totalPages) { %><a href="/?<%= qs %>page=<%= page + 1 %>">Next &rarr;</a><% } %>
+      </nav>
+    <% } %>
   </main>
 </body>
 </html>
