@@ -11,15 +11,25 @@
     <h1>Furniture Shop</h1>
     <nav><a href="/">Products</a></nav>
   </header>
+  <section class="hero">
+    <h2>Find furniture you'll love</h2>
+    <p>Browse the catalogue, or just tell us what you're looking for.</p>
+  </section>
   <main>
-    <p class="notice">Showing <%= products.length %> products<% if (products.some(p => p.source === 'placeholder')) { %> (placeholder data — real catalogue coming in a later step)<% } %></p>
+    <p class="notice"><%= products.length %> products<% if (products.some(p => p.source === 'placeholder')) { %> · placeholder data — real catalogue coming soon<% } %></p>
     <ul class="product-grid">
       <% for (const p of products) { %>
         <li class="product-card">
-          <% if (p.image_url) { %><img src="<%= p.image_url %>" alt="<%= p.product_name %>"><% } %>
-          <h2><%= p.product_name %></h2>
-          <p class="category"><%= p.category %></p>
-          <p class="price">$<%= p.price.toFixed(2) %></p>
+          <% if (p.image_url) { %>
+            <img src="<%= p.image_url %>" alt="<%= p.product_name %>" loading="lazy">
+          <% } else { %>
+            <div class="product-image">&#9642;</div>
+          <% } %>
+          <div class="product-body">
+            <h2><%= p.product_name %></h2>
+            <p class="category"><%= p.category %></p>
+            <p class="price">$<%= p.price.toFixed(2) %></p>
+          </div>
         </li>
       <% } %>
     </ul>
