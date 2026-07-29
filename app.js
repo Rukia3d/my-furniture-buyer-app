@@ -42,7 +42,27 @@ app.get('/account', requireLogin, async (req, res) => {
       liveBalanceError = 'Could not reach the shop to fetch your balance — try refreshing.';
     }
   }
-  res.render('account', { liveBalance, liveBalanceError });
+  res.render('account', {
+    liveBalance,
+    liveBalanceError,
+    saved: req.query.saved === '1',
+    error: null,
+  });
+});
+
+app.post('/account/display-name', requireLogin, (req, res) => {
+  const displayName = (req.body.display_name || '').trim();
+  if (!displayName || displayName.length > 50) {
+    return res.status(400).render('account', {
+      liveBalance: null,
+      liveBalanceError: req.currentUser.account_type === 'linked' ? 'Refresh to see your balance.' : null,
+      saved: false,
+      error: 'Display name must be 1–50 characters.',
+    });
+  }
+  require('./db/db').prepare('UPDATE users SET display_name = ? WHERE id = ?')
+    .run(displayName, req.currentUser.id);
+  res.redirect('/account?saved=1');
 });
 
 const port = process.env.PORT || 3003;

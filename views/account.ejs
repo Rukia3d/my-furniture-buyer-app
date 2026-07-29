@@ -10,8 +10,16 @@
   <%- include('partials/header') %>
   <main class="narrow">
     <h2 class="page-title">My account</h2>
+    <% if (saved) { %><p class="success">Display name updated.</p><% } %>
+    <% if (error) { %><p class="error"><%= error %></p><% } %>
     <dl class="account-details">
-      <dt>Name</dt><dd><%= currentUser.display_name %></dd>
+      <dt>Name</dt>
+      <dd>
+        <form action="/account/display-name" method="post" class="name-form">
+          <input type="text" name="display_name" value="<%= currentUser.display_name %>" maxlength="50" required>
+          <button type="submit" class="button-primary small">Save</button>
+        </form>
+      </dd>
       <dt>Username</dt><dd><%= currentUser.username %></dd>
       <dt>Account type</dt>
       <dd><%= currentUser.account_type === 'linked' ? 'Linked to the live shop account' : 'Local demo account' %></dd>
