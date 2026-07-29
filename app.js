@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const SqliteStore = require('better-sqlite3-session-store')(session);
 const path = require('path');
 const { seed } = require('./db/seed');
 const { loadUser, requireLogin } = require('./routes/middleware');
@@ -18,6 +19,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
+  // Sessions live in SQLite so a server restart never logs anyone out.
+  store: new SqliteStore({ client: require('./db/db'), expired: { clear: true, intervalMs: 15 * 60 * 1000 } }),
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,

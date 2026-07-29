@@ -32,9 +32,12 @@ db.exec(`
   );
 
   CREATE TABLE IF NOT EXISTS agent_conversations (
-    user_id    INTEGER PRIMARY KEY REFERENCES users(id),
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    INTEGER NOT NULL REFERENCES users(id),
+    title      TEXT NOT NULL DEFAULT 'New chat',
     messages   TEXT NOT NULL DEFAULT '[]',
     log        TEXT NOT NULL DEFAULT '[]',
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
 

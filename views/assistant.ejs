@@ -11,7 +11,10 @@
   <main class="chat-main">
     <div class="chat-header">
       <h2 class="page-title">Shopping assistant</h2>
-      <form action="/assistant/clear" method="post"><button type="submit" class="link-button subtle">Clear chat</button></form>
+      <div class="chat-actions">
+        <a href="/chats" class="subtle-link">My chats</a>
+        <form action="/assistant/new" method="post"><button type="submit" class="link-button subtle">New chat</button></form>
+      </div>
     </div>
     <p class="notice">Ask in plain English — "find me a mustard chair under $500", "what's my balance?", "buy the first one".</p>
     <div id="chat" class="chat-log">

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My chats — Furniture Shop</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="narrow-wide">
+    <div class="chat-header">
+      <h2 class="page-title">My chats</h2>
+      <form action="/assistant/new" method="post"><button type="submit" class="button-primary">New chat</button></form>
+    </div>
+    <% if (chats.length === 0) { %>
+      <p>No conversations yet. <a href="/assistant">Start one with the assistant</a>.</p>
+    <% } else { %>
+      <ul class="chat-list">
+        <% for (const c of chats) { %>
+          <li class="chat-list-item <%= c.id === activeChatId ? 'active' : '' %>">
+            <a class="chat-list-link" href="/assistant?chat=<%= c.id %>">
+              <span class="cl-title"><%= c.title %></span>
+              <span class="cl-meta"><%= c.turns / 2 %> message<%= c.turns === 2 ? '' : 's' %> · <%= c.updated_at %></span>
+            </a>
+            <form action="/chats/<%= c.id %>/delete" method="post" onsubmit="return confirm('Delete this chat?')">
+              <button type="submit" class="link-button subtle">Delete</button>
+            </form>
+          </li>
+        <% } %>
+      </ul>
+    <% } %>
+  </main>
+</body>
+</html>

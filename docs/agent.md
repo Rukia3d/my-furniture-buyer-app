@@ -56,11 +56,17 @@ makes the money-safety not depend on them.
 
 ## Conversation memory
 
-Each user's conversation (display log + full model history) is persisted in
-the `agent_conversations` SQLite table after every turn, so chats survive
-server restarts. History is capped at the most recent 60 messages (trimmed so
-it never starts mid-tool-call). "Clear chat" on the page deletes it. The
-in-flight pending-order token is memory-only and expires in 5 minutes.
+Users can have many conversations. Each one (display log + full model
+history) is a row in the `agent_conversations` SQLite table, saved after
+every turn, so chats survive server restarts. **My chats** (`/chats`) lists
+them all — newest first, titled from the first message — and reopening one
+resumes it with full context. "New chat" starts a fresh one; deleting is
+per-chat from the list. Model history is capped at the most recent 60
+messages per conversation (trimmed so it never starts mid-tool-call). Login
+sessions are also persisted in SQLite, so a restart neither logs anyone out
+nor loses which chat was active. The in-flight pending-order token is the
+one deliberate exception: memory-only, 5-minute expiry — a restart
+mid-confirmation safely cancels the pending order.
 
 ## Error handling
 
