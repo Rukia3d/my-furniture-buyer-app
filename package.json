@@ -1,0 +1,28 @@
+{
+  "name": "my-furniture-buyer-app",
+  "version": "1.0.0",
+  "description": "Furniture buyer app — hackathon Day 1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rukia3d/my-furniture-buyer-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Rukia3d/my-furniture-buyer-app/issues"
+  },
+  "homepage": "https://github.com/Rukia3d/my-furniture-buyer-app#readme",
+  "dependencies": {
+    "better-sqlite3": "^13.0.1",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1"
+  }
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Furniture Shop</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <h1>Furniture Shop</h1>
+    <nav><a href="/">Products</a></nav>
+  </header>
+  <main>
+    <p class="notice">Showing <%= products.length %> products<% if (products.some(p => p.source === 'placeholder')) { %> (placeholder data — real catalogue coming in a later step)<% } %></p>
+    <ul class="product-grid">
+      <% for (const p of products) { %>
+        <li class="product-card">
+          <% if (p.image_url) { %><img src="<%= p.image_url %>" alt="<%= p.product_name %>"><% } %>
+          <h2><%= p.product_name %></h2>
+          <p class="category"><%= p.category %></p>
+          <p class="price">$<%= p.price.toFixed(2) %></p>
+        </li>
+      <% } %>
+    </ul>
+  </main>
+</body>
+</html>
