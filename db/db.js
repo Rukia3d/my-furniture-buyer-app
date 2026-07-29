@@ -31,6 +31,13 @@ db.exec(`
     last_synced_at TEXT
   );
 
+  CREATE TABLE IF NOT EXISTS agent_conversations (
+    user_id    INTEGER PRIMARY KEY REFERENCES users(id),
+    messages   TEXT NOT NULL DEFAULT '[]',
+    log        TEXT NOT NULL DEFAULT '[]',
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
   CREATE TABLE IF NOT EXISTS orders (
     id           INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id      INTEGER NOT NULL REFERENCES users(id),

@@ -83,11 +83,41 @@ const TOOLS = [
   },
 ];
 
+// Optional fifth tool: semantic catalogue Q&A via the RAG sidecar. Only
+// offered to the model when the sidecar is configured AND the injected
+// impls provide it — the mocked eval world doesn't, so evals are unaffected.
+const RAG_TOOL = {
+  name: 'answer_catalogue_question',
+  description:
+    'Answer an open-ended or vague question about the catalogue using semantic search over all ' +
+    'products ("something like a Scandinavian side table but cheaper", "most affordable option ' +
+    'in blue"). Use this when exact filters cannot express the request. Returns a grounded answer ' +
+    'with item ids. Do not use it for balance or ordering.',
+  input_schema: {
+    type: 'object',
+    properties: { question: { type: 'string', description: "The customer's question, in full" } },
+    required: ['question'],
+  },
+};
+
 // Default tool implementations — real services. The eval harness passes its own.
 function realToolImpls() {
   const db = require('../db/db');
   const account = require('./account');
+  const ragUrl = (process.env.RAG_URL || '').replace(/\/+$/, '');
+  const ragImpl = ragUrl ? {
+    async answer_catalogue_question(input) {
+      const r = await fetch(`${ragUrl}/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: input.question || '' }),
+      });
+      if (!r.ok) return { error: 'unavailable', message: 'Semantic catalogue search is unavailable right now — fall back to search_products.' };
+      return r.json();
+    },
+  } : {};
   return {
+    ...ragImpl,
     async search_products(input) {
       const limit = Math.min(Math.max(input.limit || 10, 1), 25);
       const clauses = [];
@@ -145,7 +175,14 @@ class AgentSession {
     this.pendingOrder = null;
   }
 
+  get tools() {
+    return this.impls.answer_catalogue_question ? [...TOOLS, RAG_TOOL] : TOOLS;
+  }
+
   async runTool(name, input) {
+    if (name === 'answer_catalogue_question' && this.impls.answer_catalogue_question) {
+      return this.impls.answer_catalogue_question(input, this.user);
+    }
     if (name === 'search_products') return this.impls.search_products(input, this.user);
     if (name === 'get_product_details') return this.impls.get_product_details(input, this.user);
     if (name === 'check_balance') return this.impls.check_balance(input, this.user);
@@ -202,7 +239,7 @@ class AgentSession {
         model: MODEL,
         max_tokens: 1024,
         system: SYSTEM_PROMPT,
-        tools: TOOLS,
+        tools: this.tools,
         messages: this.messages,
       });
 

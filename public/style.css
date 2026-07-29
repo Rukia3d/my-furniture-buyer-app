@@ -220,3 +220,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 2rem 2.5rem 4rem; }
   overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
 }
 .chat-preview-card .cp-price { font-size: .75rem; font-weight: 700; color: var(--accent-dark); padding: .15rem .4rem .35rem; }
+
+.chat-header { display: flex; justify-content: space-between; align-items: baseline; }
+.link-button.subtle { color: var(--muted); font-size: .8rem; }
+.link-button.subtle:hover { color: var(--ink); }
