@@ -17,3 +17,7 @@ rag-sidecar/__pycache__/
 .DS_Store
 db/*.sqlite-shm
 db/*.sqlite-wal
+
+# Playwright
+test-results/
+playwright-report/
