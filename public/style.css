@@ -318,3 +318,7 @@ main { max-width: 1160px; margin: 0 auto; padding: 2rem 2.5rem 4rem; }
 .site-footer p { font-size: .82rem; }
 
 .hero-panel { background-size: cover; background-position: center 35%; }
+
+a.benefit { color: inherit; text-decoration: none; transition: border-color .15s ease, box-shadow .15s ease; }
+a.benefit:hover { border-color: var(--teal); box-shadow: var(--shadow); }
+.export-btn { text-decoration: none; display: inline-block; }

@@ -16,10 +16,10 @@
     </div>
   </section>
   <ul class="benefits">
-    <li class="benefit"><span class="b-icon">◈</span><span class="b-text">762 real products<span class="b-sub">live catalogue</span></span></li>
-    <li class="benefit"><span class="b-icon">✦</span><span class="b-text">AI assistant<span class="b-sub">shop by asking</span></span></li>
-    <li class="benefit"><span class="b-icon">✓</span><span class="b-text">Confirmed orders<span class="b-sub">never a surprise charge</span></span></li>
-    <li class="benefit"><span class="b-icon">⬇</span><span class="b-text">PDF invoices<span class="b-sub">on every live order</span></span></li>
+    <li><a class="benefit" href="/#products"><span class="b-icon">◈</span><span class="b-text"><%= total %> real products<span class="b-sub">live catalogue</span></span></a></li>
+    <li><a class="benefit" href="/assistant"><span class="b-icon">✦</span><span class="b-text">AI assistant<span class="b-sub">shop by asking</span></span></a></li>
+    <li><a class="benefit" href="/orders"><span class="b-icon">✓</span><span class="b-text">Confirmed orders<span class="b-sub">never a surprise charge</span></span></a></li>
+    <li><a class="benefit" href="/orders/export.pdf"><span class="b-icon">⬇</span><span class="b-text">PDF export<span class="b-sub">your orders, one click</span></span></a></li>
   </ul>
   <% } %>
   <main>
@@ -35,7 +35,7 @@
       </form>
       <p class="notice"><%= total %> product<%= total === 1 ? '' : 's' %><%= category ? ` in ${category}` : '' %></p>
     </div>
-    <ul class="product-grid">
+    <ul class="product-grid" id="products">
       <% for (const p of products) { %>
         <li class="product-card">
           <a href="/products/<%= p.item_id %>">

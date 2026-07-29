@@ -9,7 +9,10 @@
 <body>
   <%- include('partials/header') %>
   <main>
-    <h2 class="page-title">My orders</h2>
+    <div class="chat-header">
+      <h2 class="page-title">My orders</h2>
+      <a href="/orders/export.pdf" class="button-primary small export-btn">Export PDF</a>
+    </div>
     <% if (message) { %><p class="success"><%= message %></p><% } %>
     <% if (orders.length === 0) { %>
       <p>No orders yet. <a href="/">Browse the catalogue</a> to place your first one.</p>
