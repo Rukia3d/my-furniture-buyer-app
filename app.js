@@ -6,6 +6,7 @@ const { seed } = require('./db/seed');
 const { loadUser, requireLogin } = require('./routes/middleware');
 const authRoutes = require('./routes/auth');
 const catalogueRoutes = require('./routes/catalogue');
+const orderRoutes = require('./routes/orders');
 
 seed();
 
@@ -24,6 +25,7 @@ app.use(session({
 app.use(loadUser);
 app.use(authRoutes);
 app.use(catalogueRoutes);
+app.use(orderRoutes);
 
 app.get('/account', requireLogin, (req, res) => {
   res.render('account');

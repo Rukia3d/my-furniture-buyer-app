@@ -168,3 +168,21 @@ main { max-width: 1160px; margin: 0 auto; padding: 2rem 2.5rem 4rem; }
 .detail-row { margin-bottom: .5rem; }
 .detail-row span { color: var(--muted); display: inline-block; min-width: 110px; }
 .muted-note { color: var(--muted); font-size: .85rem; margin-top: 1.5rem; }
+
+/* --- orders & buy --- */
+.success {
+  background: #e8f3e8; border: 1px solid #b3d4b3; color: #2e5e2e;
+  padding: .6rem .9rem; border-radius: 6px; margin-bottom: 1rem; font-size: .9rem;
+}
+.buy-form { display: flex; align-items: flex-end; gap: 1rem; margin: 1rem 0 .5rem; }
+.buy-form label { font-size: .85rem; color: var(--muted); }
+.buy-form input {
+  display: block; width: 4.5rem; margin-top: .3rem; padding: .5rem .6rem;
+  font-size: 1rem; font-family: inherit; border: 1px solid var(--line); border-radius: 6px;
+}
+.orders-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.orders-table th, .orders-table td { text-align: left; padding: .65rem .9rem; border-bottom: 1px solid var(--line); font-size: .92rem; }
+.orders-table th { background: #f1ece4; color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: .75rem; letter-spacing: .06em; }
+.orders-table tr:last-child td { border-bottom: none; }
+.orders-table a { color: var(--accent-dark); text-decoration: none; }
+.tag { background: var(--accent); color: #fff; font-size: .7rem; padding: .1rem .45rem; border-radius: 10px; margin-left: .4rem; vertical-align: middle; }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My orders — Furniture Shop</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main>
+    <h2 class="page-title">My orders</h2>
+    <% if (message) { %><p class="success"><%= message %></p><% } %>
+    <% if (orders.length === 0) { %>
+      <p>No orders yet. <a href="/">Browse the catalogue</a> to place your first one.</p>
+    <% } else { %>
+      <p class="notice"><%= orders.length %> order<%= orders.length === 1 ? '' : 's' %> · total spent $<%= totalSpent.toFixed(2) %></p>
+      <table class="orders-table">
+        <thead>
+          <tr><th>Date</th><th>Item</th><th>Qty</th><th>Unit price</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+          <% for (const o of orders) { %>
+            <tr>
+              <td><%= o.created_at %></td>
+              <td>
+                <a href="/products/<%= o.item_id %>"><%= o.product_name || o.item_id %></a>
+                <% if (o.api_order_id) { %><span class="tag">live</span><% } %>
+              </td>
+              <td><%= o.quantity %></td>
+              <td>$<%= o.unit_price.toFixed(2) %></td>
+              <td>$<%= o.total_price.toFixed(2) %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } %>
+  </main>
+</body>
+</html>
