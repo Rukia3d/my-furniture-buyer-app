@@ -64,4 +64,5 @@ npm run test:e2e    # Playwright browser tests
 ```
 
 See `docs/evals.md` for what each scenario covers, `docs/agent.md` for how the
-assistant works, and `docs/rag.md` for the Q&A pipeline.
+assistant works, `docs/rag.md` for the Q&A pipeline, and `docs/openclaw.md` for
+the WhatsApp integration.

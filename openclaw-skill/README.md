@@ -3,6 +3,11 @@
 Packages the same four shop tools as the in-app assistant as a skill for
 [OpenClaw](https://openclaw.ai), so you can shop via your own WhatsApp.
 
+**This folder is the source of truth for the skill; `~/.openclaw/skills/` holds
+the deployed copy.** For how the whole integration fits together — architecture,
+what was installed where, safety differences, and the setup gotchas we hit —
+see [`../docs/openclaw.md`](../docs/openclaw.md).
+
 ## Setup (manual, ~10 min)
 
 1. **Install OpenClaw** (review what it asks for — it's a personal agent
