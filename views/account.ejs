@@ -17,8 +17,10 @@
       <dd><%= currentUser.account_type === 'linked' ? 'Linked to the live shop account' : 'Local demo account' %></dd>
       <% if (currentUser.account_type === 'local') { %>
         <dt>Balance</dt><dd>$<%= currentUser.balance.toFixed(2) %></dd>
+      <% } else if (liveBalanceError) { %>
+        <dt>Balance</dt><dd class="error-inline"><%= liveBalanceError %></dd>
       <% } else { %>
-        <dt>Balance</dt><dd>Fetched live from the shop (coming with the API integration)</dd>
+        <dt>Balance</dt><dd>$<%= liveBalance.toFixed(2) %> <span class="tag">live</span></dd>
       <% } %>
     </dl>
   </main>

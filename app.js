@@ -27,11 +27,24 @@ app.use(authRoutes);
 app.use(catalogueRoutes);
 app.use(orderRoutes);
 
-app.get('/account', requireLogin, (req, res) => {
-  res.render('account');
+app.get('/account', requireLogin, async (req, res) => {
+  let liveBalance = null;
+  let liveBalanceError = null;
+  if (req.currentUser.account_type === 'linked') {
+    try {
+      liveBalance = await require('./services/account').getBalance(req.currentUser);
+    } catch (err) {
+      liveBalanceError = 'Could not reach the shop to fetch your balance — try refreshing.';
+    }
+  }
+  res.render('account', { liveBalance, liveBalanceError });
 });
 
 const port = process.env.PORT || 3003;
 app.listen(port, () => {
   console.log(`Furniture buyer app running at http://localhost:${port}`);
+  // Refresh prices/names from the live shop on boot; keep serving the
+  // last known catalogue if the API is unreachable.
+  require('./services/catalogue').refreshFromApi()
+    .catch(err => console.error('Catalogue refresh skipped:', err.message));
 });

@@ -32,16 +32,16 @@
         <% } %>
         <% if (typeof error !== 'undefined' && error) { %><p class="error"><%= error %></p><% } %>
         <% if (currentUser) { %>
+          <form action="/products/<%= product.item_id %>/buy" method="post" class="buy-form">
+            <label>Qty
+              <input type="number" name="quantity" value="1" min="1" max="10">
+            </label>
+            <button type="submit" class="button-primary">Buy</button>
+          </form>
           <% if (currentUser.account_type === 'local') { %>
-            <form action="/products/<%= product.item_id %>/buy" method="post" class="buy-form">
-              <label>Qty
-                <input type="number" name="quantity" value="1" min="1" max="10">
-              </label>
-              <button type="submit" class="button-primary">Buy</button>
-            </form>
             <p class="muted-note">Your balance: $<%= currentUser.balance.toFixed(2) %></p>
           <% } else { %>
-            <p class="muted-note">This account orders through the live shop — coming with the API integration.</p>
+            <p class="muted-note">This order goes to the real shop and debits your live balance.</p>
           <% } %>
         <% } else { %>
           <p class="muted-note"><a href="/login">Log in</a> to buy this item.</p>
