@@ -316,3 +316,5 @@ main { max-width: 1160px; margin: 0 auto; padding: 2rem 2.5rem 4rem; }
 .site-footer .f-brand { color: #fff; font-weight: 800; font-size: 1.1rem; }
 .site-footer .f-brand::after { content: "."; color: #7fc2d4; }
 .site-footer p { font-size: .82rem; }
+
+.hero-panel { background-size: cover; background-position: center 35%; }

@@ -22,7 +22,12 @@ router.get('/', (req, res) => {
 
   const categories = db.prepare('SELECT DISTINCT category FROM products ORDER BY category').all().map(r => r.category);
 
-  res.render('home', { products, categories, category, page, totalPages, total });
+  // Hero backdrop: the priciest product that has a photo.
+  const heroItem = db.prepare(
+    'SELECT item_id, product_name FROM products WHERE image_data IS NOT NULL ORDER BY price DESC LIMIT 1'
+  ).get();
+
+  res.render('home', { products, categories, category, page, totalPages, total, heroItem });
 });
 
 router.get('/products/:itemId', (req, res) => {

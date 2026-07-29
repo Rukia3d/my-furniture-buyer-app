@@ -10,7 +10,7 @@
   <%- include('partials/header') %>
   <% if (!category && page === 1) { %>
   <section class="hero">
-    <div class="hero-panel">
+    <div class="hero-panel"<% if (heroItem) { %> style="background-image: linear-gradient(115deg, rgba(15, 61, 75, .92) 0%, rgba(23, 82, 99, .82) 45%, rgba(15, 61, 75, .45) 100%), url('/products/<%= heroItem.item_id %>/image')"<% } %>>
       <h2>Discover Your Perfect Space</h2>
       <p>Browse the catalogue, or just tell our assistant what you're looking for.</p>
     </div>
