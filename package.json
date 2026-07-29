@@ -20,9 +20,11 @@
   },
   "homepage": "https://github.com/Rukia3d/my-furniture-buyer-app#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "better-sqlite3": "^13.0.1",
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "express-session": "^1.19.0"
   }
 }

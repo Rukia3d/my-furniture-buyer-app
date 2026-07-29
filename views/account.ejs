@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My account — Furniture Shop</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="narrow">
+    <h2 class="page-title">My account</h2>
+    <dl class="account-details">
+      <dt>Name</dt><dd><%= currentUser.display_name %></dd>
+      <dt>Username</dt><dd><%= currentUser.username %></dd>
+      <dt>Account type</dt>
+      <dd><%= currentUser.account_type === 'linked' ? 'Linked to the live shop account' : 'Local demo account' %></dd>
+      <% if (currentUser.account_type === 'local') { %>
+        <dt>Balance</dt><dd>$<%= currentUser.balance.toFixed(2) %></dd>
+      <% } else { %>
+        <dt>Balance</dt><dd>Fetched live from the shop (coming with the API integration)</dd>
+      <% } %>
+    </dl>
+  </main>
+</body>
+</html>

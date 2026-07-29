@@ -108,3 +108,38 @@ main { max-width: 1160px; margin: 0 auto; padding: 2rem 2.5rem 4rem; }
   font-weight: 700;
   color: var(--accent-dark);
 }
+
+/* --- header nav extras --- */
+.brand { color: inherit; text-decoration: none; }
+.inline-form { display: inline; margin-left: 1.5rem; }
+.link-button {
+  background: none; border: none; cursor: pointer;
+  color: #cbbfae; font-size: .9rem; letter-spacing: .05em; font-family: inherit; padding: 0;
+}
+.link-button:hover { color: #fff; }
+
+/* --- forms & auth pages --- */
+.narrow { max-width: 420px; }
+.page-title { font-size: 1.5rem; margin-bottom: 1.25rem; }
+.error {
+  background: #fbe9e7; border: 1px solid #e6b0a8; color: #8c2f24;
+  padding: .6rem .9rem; border-radius: 6px; margin-bottom: 1rem; font-size: .9rem;
+}
+.stacked-form label { display: block; margin-bottom: 1rem; font-size: .9rem; color: var(--muted); }
+.stacked-form input {
+  display: block; width: 100%; margin-top: .3rem;
+  padding: .55rem .7rem; font-size: 1rem; font-family: inherit;
+  border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink);
+}
+.stacked-form input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+.button-primary {
+  background: var(--accent); color: #fff; border: none; cursor: pointer;
+  padding: .6rem 1.4rem; font-size: 1rem; font-family: inherit; border-radius: 6px;
+}
+.button-primary:hover { background: var(--accent-dark); }
+.form-footer { margin-top: 1rem; color: var(--muted); font-size: .9rem; }
+
+/* --- account page --- */
+.account-details { display: grid; grid-template-columns: auto 1fr; gap: .5rem 1.5rem; }
+.account-details dt { color: var(--muted); }
+.account-details dd { font-weight: 500; }

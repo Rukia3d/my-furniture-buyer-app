@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register — Furniture Shop</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="narrow">
+    <h2 class="page-title">Create an account</h2>
+    <% if (error) { %><p class="error"><%= error %></p><% } %>
+    <form action="/register" method="post" class="stacked-form">
+      <label>Username
+        <input type="text" name="username" required autofocus value="<%= values.username || '' %>" autocomplete="username">
+      </label>
+      <label>Display name
+        <input type="text" name="display_name" required value="<%= values.display_name || '' %>" autocomplete="name">
+      </label>
+      <label>Password
+        <input type="password" name="password" required autocomplete="new-password">
+      </label>
+      <button type="submit" class="button-primary">Register</button>
+    </form>
+    <p class="form-footer">New accounts start with a $1,000 demo balance.</p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<header>
+  <h1><a href="/" class="brand">Furniture Shop</a></h1>
+  <nav>
+    <a href="/">Products</a>
+    <% if (currentUser) { %>
+      <a href="/account"><%= currentUser.display_name %></a>
+      <form action="/logout" method="post" class="inline-form"><button type="submit" class="link-button">Log out</button></form>
+    <% } else { %>
+      <a href="/login">Log in</a>
+      <a href="/register">Register</a>
+    <% } %>
+  </nav>
+</header>
