@@ -10,9 +10,17 @@
   <%- include('partials/header') %>
   <% if (!category && page === 1) { %>
   <section class="hero">
-    <h2>Find furniture you'll love</h2>
-    <p>Browse the catalogue, or just tell us what you're looking for.</p>
+    <div class="hero-panel">
+      <h2>Discover Your Perfect Space</h2>
+      <p>Browse the catalogue, or just tell our assistant what you're looking for.</p>
+    </div>
   </section>
+  <ul class="benefits">
+    <li class="benefit"><span class="b-icon">◈</span><span class="b-text">762 real products<span class="b-sub">live catalogue</span></span></li>
+    <li class="benefit"><span class="b-icon">✦</span><span class="b-text">AI assistant<span class="b-sub">shop by asking</span></span></li>
+    <li class="benefit"><span class="b-icon">✓</span><span class="b-text">Confirmed orders<span class="b-sub">never a surprise charge</span></span></li>
+    <li class="benefit"><span class="b-icon">⬇</span><span class="b-text">PDF invoices<span class="b-sub">on every live order</span></span></li>
+  </ul>
   <% } %>
   <main>
     <div class="catalogue-bar">
@@ -54,5 +62,11 @@
       </nav>
     <% } %>
   </main>
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <span class="f-brand">Furniture Shop</span>
+      <p>Built for the Day 1 hackathon — real catalogue, real balance, real orders.</p>
+    </div>
+  </footer>
 </body>
 </html>
