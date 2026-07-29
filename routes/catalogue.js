@@ -22,8 +22,10 @@ router.get('/', (req, res) => {
 
   const categories = db.prepare('SELECT DISTINCT category FROM products ORDER BY category').all().map(r => r.category);
 
-  // Hero backdrop: the priciest product that has a photo.
+  // Hero backdrop: hand-picked product photo, falling back to the priciest.
   const heroItem = db.prepare(
+    "SELECT item_id, product_name FROM products WHERE item_id = '40411047' AND image_data IS NOT NULL"
+  ).get() || db.prepare(
     'SELECT item_id, product_name FROM products WHERE image_data IS NOT NULL ORDER BY price DESC LIMIT 1'
   ).get();
 
