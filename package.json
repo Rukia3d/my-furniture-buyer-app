@@ -8,7 +8,8 @@
     "start": "node app.js",
     "load-catalogue": "node db/load-catalogue.js",
     "test:e2e": "playwright test",
-    "eval": "node evals/run.js"
+    "eval": "node evals/run.js",
+    "eval:rag": "rag-sidecar/.venv/bin/python rag-sidecar/eval.py"
   },
   "repository": {
     "type": "git",

@@ -71,5 +71,13 @@ app.listen(port, () => {
   // Refresh prices/names from the live shop on boot; keep serving the
   // last known catalogue if the API is unreachable.
   require('./services/catalogue').refreshFromApi()
+    .then(() => {
+      // Tell the RAG sidecar to re-embed the fresh catalogue (fire-and-forget).
+      if (process.env.RAG_URL) {
+        fetch(`${process.env.RAG_URL.replace(/\/+$/, '')}/reload`, { method: 'POST' })
+          .then(() => console.log('RAG sidecar index reloaded'))
+          .catch(() => console.log('RAG sidecar not reachable — index not reloaded'));
+      }
+    })
     .catch(err => console.error('Catalogue refresh skipped:', err.message));
 });

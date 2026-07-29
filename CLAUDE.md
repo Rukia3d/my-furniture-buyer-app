@@ -62,6 +62,8 @@ issues on this repo — one issue per milestone, each with "done when" criteria.
   confirm the issue is closed on GitHub. Never leave a finished ticket
   unpushed.
 - One milestone at a time; verify in the browser before moving on.
-- The agent eval suite (`npm run eval`, mocked tools — see requirements.md)
-  must pass before M8 is done, and re-run after any tool-description or
-  system-prompt change.
+- Three eval suites guard the app — `npm run eval` (agent), `npm run eval:rag`
+  (RAG retrieval), `npm run test:e2e` (browser). `docs/evals.md` is the
+  tracking document: every scenario is listed there, and any change to a
+  suite MUST update that file in the same commit. Re-run the relevant suite
+  after touching what it guards (see the "re-run after" notes in the doc).
