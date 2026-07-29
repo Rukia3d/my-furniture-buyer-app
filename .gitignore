@@ -15,3 +15,5 @@ rag-sidecar/__pycache__/
 
 # OS noise
 .DS_Store
+db/*.sqlite-shm
+db/*.sqlite-wal
